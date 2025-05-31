@@ -75,15 +75,8 @@ class Equalities:
         ]
 
     def process_equality(self, event):
-        # print(self.page.result['function'])
-        # print(dif_equal_name[self.page.result['function']])
         iq = Diff_eq(self.page.result['a'], self.page.result['b'], self.page.result['N'],
                      self.page.result['y0'], dif_equal_name[self.page.result['function']])
-        # print(iq.x)
-        # print(iq.euler())
-        # print(iq.runge_kutta2())
-        # print(iq.runge_kutta3())
-        # print(iq.runge_kutta4())
 
         data = {
             "func": self.page.result['function'],
@@ -94,37 +87,11 @@ class Equalities:
             "y Runge-Kutta 4": iq.runge_kutta4(),
         }
         self.output.update_text(f"\nSolution for equality:\ny' = f(x,y) = {self.page.result['function']}")
-        # interp.process_lagrange()
-        # self.output.update_text(f'Data: Lagrange f(x) + f(X)')
         self.output.set_tables(data)
-        # self.graph.set_data(interp.data, 'Lagrange f(x) + f(x,X)')
-        # self.graph.build_graph()
+        self.output.update_text(f' ')
+        self.graph.set_data(data, data["func"])
+        self.graph.build_graph()
         self.graph.set_img()
-
-    def process_newton(self, event):
-        # interp = Interpolation_process(self.page.result)
-        # # print(interp.data)
-        # interp.process_newton()
-        # self.output.update_text(f'Data: Newton f(x) + f(X)')
-        # self.output.set_tables(self.page.result)
-        # self.graph.set_data(interp.data, 'Newton f(x) + f(x,X)')
-        # self.graph.build_graph()
-        self.graph.set_img()
-
-    # def pick_file(self, event):
-    #     self.file_picker.pick_files()
-
-    # def file_picker_result(self, event):
-    #     if event.files:
-    #         selected_file = event.files[0]
-    #         # exl = Excel_process(selected_file)
-    #         # self.page.result = exl.read_xls()
-    #         # self.page.df = exl.df
-    #         self.output.update_text(f'Data: {self.page.result["func_name"]}')
-    #         self.output.set_tables(self.page.result)
-    #         self.graph.set_data(self.page.result, self.page.result["func_name"])
-    #         self.graph.build_graph()
-    #         self.graph.set_img()
 
     def open_popup(self, event):
         popup = Popup_differ(self.page, self.output, self.func_name_upd)

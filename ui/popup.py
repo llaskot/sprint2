@@ -1,29 +1,29 @@
+import json
+
 import flet as ft
 import pandas as pd
 import math
 
 from ui.output.output import Output
+from data_process.functions import f_sym as functions
 
 
 class Popup_integr:
-    def __init__(self, page, output: Output, graph):
+    def __init__(self, page, output: Output, upd):
         self.output = output
-        self.graph = graph
-        self.start = None
-        self.h = None
-        self.m = None
+        # self.graph = graph
+        self.a = None
+        self.b = None
+        self.n = None
+        # self.y0 = None
         self.func = None
-        self.pares = 1
-        # self.num_to_process = 1
         self.page = page
         self.dialog = None  # Пока нет попапа
+        self.upd = upd
 
         self.drp = ft.Dropdown(
-            value="2",
-            options=[
-                ft.DropdownOption(key="1", text=' SIN(X) '),
-                ft.DropdownOption(key="2", text=' EXP(-X) '),
-            ],
+            value="1",
+            options=[ft.DropdownOption(key=key, text=f' {key} ') for key in functions],
         )
 
         self.values_fields = ft.Column(
@@ -31,14 +31,16 @@ class Popup_integr:
                 ft.Container(
                     content=ft.Row(
                         controls=[
-                            ft.Text(f'num of values'),
+                            ft.Text(f'Function:'),
+                            self.drp,
+                            ft.Text(f'   a = '),
                             self.create_new_textfield(),
-                            ft.Text(f'a = '),
+                            ft.Text(f'   b = '),
+                            # self.create_new_textfield(),
+                            # ft.Text(f'   y0 = '),
                             self.create_new_textfield(),
-                            ft.Text(f'b = '),
+                            ft.Text(f"   Value's number ="),
                             self.create_new_textfield(),
-                            ft.Text(f'Function'),
-                            self.drp
 
                         ]
                     )
@@ -46,55 +48,24 @@ class Popup_integr:
             ],
             scroll=ft.ScrollMode.AUTO
         )
-        self.desired_fields = ft.Column(
-            controls=[],
-            scroll=ft.ScrollMode.AUTO
-        )
         self.scroll_column = ft.Column(
             controls=[
                 self.create_fields_column(),
-                # self.val_buttons,
                 ft.Text(''),
-                # self.create_desired_column(),
-                # self.desired_buttons
             ],
             scroll=ft.ScrollMode.AUTO
         )
 
-    def f1(self, x):
-        return math.sin(x)
-
-    def f1_dif(self, x):
-        return math.cos(x)
-
-    def f2(self, x):
-        return math.exp(-x)
-
-    def f2_dif(self, x):
-        return -math.exp(-x)
-
     def get_data(self):
-        x = [self.start + i * self.h for i in range(self.m)]
-        if self.func == "1":
-            y = [self.f1(a) for a in x]
-            dy = [self.f1_dif(a) for a in x]
-        else:
-            y = [self.f2(a) for a in x]
-            dy = [self.f2_dif(a) for a in x]
-
         res = {
-            'x_name': 'x',
-            'func_name': 'f(x)',
-            'x_val': x,
-            'func_val': y,
-            'analytics_name': f"f'(x) analytics",
-            'numeric_name': f"f'(x) numeric",
-            'analytics_val': dy,
+            'function': self.func,
+            'a': self.a,
+            'b': self.b,
+            'N': self.n,
         }
-        res['numeric_val'] = [None for _ in range(len(res['analytics_val']))]
         print(res)
         self.page.result = res
-
+        self.page.df = 'aaaa'
 
     def open(self, e=None):  # e=None для вызова вручную
         self.create_popup()
@@ -108,7 +79,6 @@ class Popup_integr:
 
     def create_fields_column(self):
         return self.values_fields
-
 
     def create_new_textfield(self):
         return ft.TextField(
@@ -139,7 +109,7 @@ class Popup_integr:
                         content=
                         self.scroll_column,
                         padding=10,
-                        width=600
+                        width=850
                     )
                 ],
                 scroll=ft.ScrollMode.AUTO
@@ -154,26 +124,25 @@ class Popup_integr:
         self.page.update()
 
     def collect_values(self, event):
-        self.start = None
-        self.h = None
-        self.m = None
+        self.a = None
+        self.b = None
+        self.n = None
+        self.y0 = None
         row_container = self.values_fields.controls[0]
-        self.start = float(row_container.content.controls[1].value)
-        self.h = float(row_container.content.controls[3].value)
-        self.m = int(row_container.content.controls[5].value)
+        self.a = float(row_container.content.controls[3].value)
+        self.b = float(row_container.content.controls[5].value)
+        # self.y0 = float(row_container.content.controls[7].value)
+        self.n = int(row_container.content.controls[7].value)
         self.func = self.drp.value
         self.get_data()
-        print('self.start =',self.start , 'self.h = ',self.h , 'self.m = ' ,self.m, 'self.func =', self.func)
+        # print('self.a =', self.a, 'self.b = ', self.b, 'n = ', self.n, 'self.func =', self.func)
 
     def close(self, e):
         self.collect_values(e)
         self.dialog.open = False
         self.page.update()
         self.dialog = None
-        # self.page.result = self.get_result()
-        self.graph.set_data(self.page.result, 'f(x)')
-        self.graph.build_graph_diff()
-        self.graph.set_img()
-        # self.page.df = self.get_df()
-        self.output.update_text('Data: f(x)')
-        self.output.set_tables_diff(self.page.result)
+        self.output.update_text("Data: y = f(x) conditions")
+        self.output.update_text(json.dumps(self.page.result, indent=1, ensure_ascii=False))
+        self.upd()
+        self.page.update()

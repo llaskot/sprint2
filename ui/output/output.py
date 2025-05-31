@@ -1,5 +1,4 @@
 import flet as ft
-import pandas as pd
 
 
 class Output:
@@ -46,7 +45,6 @@ class Output:
         for key, val in data.items():
             if key == 'func':
                 continue
-            print(key, val)
             if key == 'x':
                 x_row = [ft.DataColumn(ft.Text(key))] + [
                     ft.DataColumn(ft.Text(i, selectable=True, no_wrap=True, max_lines=1)) for i in val]
@@ -64,7 +62,8 @@ class Output:
                 ft.DataTable(
                     columns=x_row,
                     rows=y_row,
-                    border=ft.border.all(2, ft.Colors.RED),
+                    border=ft.border.all(2, ft.Colors.GREY),
+                    vertical_lines=ft.BorderSide(1, ft.Colors.GREY)
                 )
             ])
         # self.scroll_column.controls.clear()
@@ -72,28 +71,22 @@ class Output:
         self.scroll_column.update()
 
     def set_tables_diff(self, data: dict):
-        max_len = len(data['x_val'])
+        columns = [ft.DataColumn(ft.Text(key)) for key in data.keys()]
+        row = ft.DataRow(cells=[ft.DataCell(ft.Text(str(value))) for value in data.values()])
+
         table = ft.Row(
             scroll=ft.ScrollMode.AUTO,
             expand=True,
             controls=[
                 ft.DataTable(
-                    columns=[ft.DataColumn(ft.Text(data['x_name']))] + [ft.DataColumn(
-                        ft.Text(data['x_val'][i] if i < len(data['x_val']) else '', selectable=True, no_wrap=True,
-                                max_lines=1)) for i in range(max_len)],
-                    rows=[
-                        ft.DataRow(
-                            cells=[ft.DataCell(ft.Text(ind))] + [ft.DataCell(
-                                ft.Text(str(row[i]) if i < len(row) else '', selectable=True, no_wrap=True,
-                                        max_lines=1)) for i in range(max_len)]
-                        )
-                        for row, ind in ((data['func_val'], data['func_name']),
-                                         (data['analytics_val'], data['analytics_name']),
-                                         (data['numeric_val'], data['numeric_name']))
-                    ],
+                    columns=columns,
+                    rows=[row],
+                    border=ft.border.all(2, ft.Colors.GREY),
+                    vertical_lines=ft.BorderSide(1, ft.Colors.GREY)
                 )
-            ])
-        # self.scroll_column.controls.clear()
+            ]
+        )
+
         self.scroll_column.controls.append(table)
         self.scroll_column.update()
 

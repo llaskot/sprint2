@@ -80,7 +80,7 @@ class Integral_process:
             'simpson': simpson
         }
 
-    @log_thread_async
+    # @log_thread_async
     async def simps(self, func, tolerance: float):
         if self.steps_qty % 2 != 0:
             N = self.steps_qty // 2
@@ -100,20 +100,21 @@ class Integral_process:
                 tolerance
         )
 
-    @log_thread_async
+    # @log_thread_async
+    # @call_logging
     async def trapezoidal(self, f_vals: list, tolerance: float):
 
         return self.step * (f_vals[0] + f_vals[-1]) / 2 + self.step * sum(f_vals[1:-1]) + tolerance
 
-    @log_thread_async
+    # @log_thread_async
     async def left_rect(self, f_vals: list, tolerance: float):
         return sum(f_vals[:-1]) * self.step + tolerance
 
-    @log_thread_async
+    # @log_thread_async
     async def right_rect(self, f_vals: list, tolerance: float):
         await asyncio.sleep(0)
         return sum(f_vals[1:]) * self.step + tolerance
 
-    @log_thread_async
+    # @log_thread_async
     async def center_rect(self, func, tolerance: float):
         return sum([func((x + self.step / 2)) for x in self.values[:-1]]) * self.step + tolerance

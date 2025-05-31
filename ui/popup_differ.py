@@ -144,7 +144,5 @@ class Popup_differ:
         self.dialog = None
         self.output.update_text("Data: y'= f(x, y) conditions")
         self.output.update_text(json.dumps(self.page.result, indent=1, ensure_ascii=False))
-        # from ui.control.equalities import Equalities
-        # Equalities.func_name_upd(self.page.result)
         self.upd()
         self.page.update()

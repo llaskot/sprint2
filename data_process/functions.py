@@ -18,15 +18,15 @@ def super_func(func_name: str, x: float, lev: int = 0):
     return func(x)
 
 
-if __name__ == '__main__':
-    from data_process.integral_process import Integral_process
-
-    integr = Integral_process(1000, 0, 5)
-    # print(integr.values)
-    # gen = integr.process_function(sqr)
-    # for i in range(4):
-    #     print(next(gen))
-    # integr.get_func_values(sqr)
-
-    # integr.find_integrals(sqr)
-    integr.find_integrals('x^3 + 2x^2 + 5')
+# if __name__ == '__main__':
+#     from data_process.integral_process import Integral_process
+#
+#     integr = Integral_process(1000, 0, 5)
+#     # print(integr.values)
+#     # gen = integr.process_function(sqr)
+#     # for i in range(4):
+#     #     print(next(gen))
+#     # integr.get_func_values(sqr)
+#
+#     # integr.find_integrals(sqr)
+#     integr.find_integrals('x^3 + 2x^2 + 5')
