@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import matplotlib
 import flet as ft
@@ -48,10 +49,16 @@ class Graph:
     def build_path(self):
         self.save_path = os.path.join(self.dir_path, f"graph_{int(time.time())}.png")
 
+
     def build_dir_path(self):
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        project_root = os.path.abspath(os.path.join(script_dir, "..", ".."))
-        return os.path.join(project_root, "ui", "graph")
+        if getattr(sys, 'frozen', False):
+            # Если запущено из .exe
+            base_path = sys._MEIPASS
+        else:
+            # Обычный запуск
+            base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+        return os.path.join(base_path, "ui", "graph")
 
     def build_graph(self):
         plt.figure(facecolor='black', figsize=(20.05, 12))
