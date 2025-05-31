@@ -1,8 +1,7 @@
 import flet as ft
-
+from data_process.decorators import call_logging
 from ui.control.equalities import Equalities
 from ui.control.integration import Integration
-# from ui.control.interpolation import Interpolation
 from ui.graph.grapf import Graph
 from ui.output.output import Output
 
@@ -17,26 +16,75 @@ def main(page: ft.Page):
     graph.build_graph()
     interp = Equalities(page, output, graph)
     integr = Integration(page, output, graph)
+    pict = ft.Container(
+        bgcolor=ft.Colors.BLUE_100,
+        padding=2,
+        expand=2,
+        content=graph.img,
+    )
 
-
+    @call_logging
     def open_diff(e):
+        pict.visible = True
+        integ_btn.bgcolor = "#020561"
+        integ_btn.style.side = None
+        diff_btn.bgcolor = ft.Colors.GREEN_500
+        diff_btn.style.side = ft.BorderSide(3, ft.Colors.DEEP_ORANGE_900)
+        pict.update()
         control.content.controls[0] = interp.control
         control.content.update()
 
     def open_int(e):
+        pict.visible = False
+        integ_btn.bgcolor = ft.Colors.BLUE_700
+        integ_btn.style.side = ft.BorderSide(3, ft.Colors.DEEP_ORANGE_900)
+        diff_btn.bgcolor = "#136102"
+        diff_btn.style.side = None
+        pict.update()
         control.content.controls[0] = integr.control
         control.content.update()
+
+    diff_btn = ft.ElevatedButton('Diff Equalities',
+                                 height=30, color="white", width=120,
+                                 on_click=open_diff,
+
+                                 style=ft.ButtonStyle(
+                                     side=ft.BorderSide(3, ft.Colors.DEEP_ORANGE_900),
+                                     elevation={
+                                         None: 100,
+                                         ft.ControlState.PRESSED: 0,
+                                         ft.ControlState.HOVERED: 4
+                                     },
+                                     shape=ft.RoundedRectangleBorder(radius=5),
+                                     bgcolor=ft.Colors.GREEN_500
+                                     # bgcolor="#136102",
+                                 )
+
+                                 )
+
+    integ_btn = ft.ElevatedButton('Integration',
+                                  height=30, color="white", width=120,
+                                  on_click=open_int,
+
+                                  style=ft.ButtonStyle(
+                                      side=None,
+                                      # side=ft.BorderSide(3, ft.Colors.DEEP_ORANGE_900),
+                                      elevation={
+                                          None: 100,
+                                          ft.ControlState.PRESSED: 0,
+                                          ft.ControlState.HOVERED: 4
+                                      },
+                                      shape=ft.RoundedRectangleBorder(radius=5),
+                                      bgcolor="#020561",
+                                      # ft.Colors.BLUE_700,
+                                  )
+
+                                  )
 
     res = ft.Container(
         content=ft.Row(
             controls=[
-                ft.Container(
-                    bgcolor=ft.Colors.BLUE_100,
-                    padding=2,
-                    expand=2,
-                    content=graph.img,
-                    # visible=False
-                ),
+                pict,
                 ft.Container(
                     # bgcolor=ft.Colors.GREEN_100,
                     padding=2,
@@ -70,30 +118,7 @@ def main(page: ft.Page):
                             ),
                             ft.Row(
                                 controls=[
-                                    ft.ElevatedButton('Diff Equalities',
-                                                      height=30, color="white", width=120,
-                                                      on_click=open_diff,
-                                                      style=ft.ButtonStyle(
-                                                          shape=ft.RoundedRectangleBorder(radius=5),
-                                                          bgcolor={
-                                                              # ft.ControlState.DISABLED: "#535426",
-                                                              ft.ControlState.DEFAULT: "#136102"
-                                                          }
-                                                      )
-
-                                                      ),
-                                    ft.ElevatedButton('Integration',
-                                                      height=30, color="white", width=120,
-                                                      on_click=open_int,
-                                                      style=ft.ButtonStyle(
-                                                          shape=ft.RoundedRectangleBorder(radius=5),
-                                                          bgcolor={
-                                                              # ft.ControlState.DISABLED: "#535426",
-                                                              ft.ControlState.DEFAULT: "#020561"
-                                                          }
-                                                      )
-
-                                                      ),
+                                    diff_btn, integ_btn,
                                 ]
                             )
 
@@ -112,8 +137,6 @@ def main(page: ft.Page):
 
     )
     page.add(control)
-
-
 
 
 if __name__ == "__main__":

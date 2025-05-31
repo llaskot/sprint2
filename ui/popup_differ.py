@@ -1,9 +1,6 @@
 import json
 import flet as ft
-
-from data_process.decorators import call_logging
 from data_process.differential_equations import f as dif_equalities
-
 from ui.output.output import Output
 
 
@@ -63,7 +60,6 @@ class Popup_differ:
             'y0': self.y0,
             'N': self.n,
         }
-        print(res)
         self.page.result = res
         self.page.df = 'aaaa'
 
@@ -82,7 +78,6 @@ class Popup_differ:
 
     def create_new_textfield(self):
         return ft.TextField(
-            # value="0",
             width=70,
             keyboard_type=ft.KeyboardType.NUMBER,
             input_filter=ft.InputFilter(
@@ -135,7 +130,6 @@ class Popup_differ:
         self.n = int(row_container.content.controls[9].value)
         self.func = self.drp.value
         self.get_data()
-        # print('self.a =', self.a, 'self.b = ', self.b, 'self.y0 = ', self.y0, 'n = ', self.n, 'self.func =', self.func)
 
     def close(self, e):
         self.collect_values(e)

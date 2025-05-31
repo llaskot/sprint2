@@ -1,13 +1,10 @@
 import os
 import time
-from copy import copy
-
 import matplotlib
 import flet as ft
 
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
 
 
 class Graph:
@@ -19,10 +16,10 @@ class Graph:
         self.img = None
         if data is None:
             data = {'func': '-xy', 'x': [0.0, 1.0, 2.0],
-                     'y Euler': [2.0, 1.8, 0.0],
-                     'y Runge-Kutta 2': [2.0, 1.6, 0.0],
-                     'y Runge-Kutta 3': [2.0, 1.4, 0.0],
-                     'y Runge-Kutta 4': [2.0, 1.2, 0.0]}
+                    'y Euler': [2.0, 1.8, 0.0],
+                    'y Runge-Kutta 2': [2.0, 1.6, 0.0],
+                    'y Runge-Kutta 3': [2.0, 1.4, 0.0],
+                    'y Runge-Kutta 4': [2.0, 1.2, 0.0]}
         self.data = data
         self.graph_name = name
         self.dir_path = self.build_dir_path()
@@ -129,66 +126,3 @@ class Graph:
         self.build_path()
         plt.savefig(self.save_path, dpi=300, bbox_inches='tight')
         plt.close()
-
-
-# def build_graph_diff(self):
-#     plt.figure(facecolor='black', figsize=(20.05, 12))
-#     ax = plt.gca()
-#     ax.set_facecolor('black')
-#     ax.tick_params(colors='white', labelsize=18)
-#     ax.spines['bottom'].set_color('white')
-#     ax.spines['left'].set_color('white')
-#     ax.xaxis.label.set_color('white')
-#     ax.yaxis.label.set_color('white')
-#     ax.title.set_color('white')
-#     ax.xaxis.label.set_size(18)
-#     ax.yaxis.label.set_size(18)
-#
-#     # plt.plot(self.x, self.y, label=f'Graph {self.y_name}', color="blue")
-#     # plt.plot(x, y2, label="Вторая строка", color="green")
-#
-#     plt.plot(
-#         self.x,
-#         self.analytics,
-#         label=f'Graph {self.analytic_name}',
-#         color='#1f77b4',
-#         marker='o',
-#         linewidth=6,  # толщина линии
-#         markersize=20  # размер точек
-#     )
-#     if self.numeric and self.numeric[0]:
-#         plt.plot(
-#             self.x,
-#             self.numeric,
-#             label=f'Graph {self.numeric_name}',
-#             color='red',
-#             marker='o',
-#             linewidth=1,  # толщина линии
-#             markersize=10  # размер точек
-#         )
-#
-#     # for xi, yi in zip(self.x, self.y):
-#     #     plt.axvline(x=xi, color='blue', linestyle='--', linewidth=0.5)
-#     #     plt.axhline(y=yi, color='blue', linestyle='--', linewidth=0.5)  # проекции на оси
-#
-#     plt.xlabel(self.x_name)
-#     plt.ylabel(self.analytic_name)
-#     plt.title(self.graph_name)
-#     ax.title.set_size(30)
-#     plt.legend()
-#     plt.legend(fontsize=18)
-#     # plt.grid(True)
-#     # plt.show()
-#     for file in os.listdir(self.dir_path):
-#         if file.endswith(".png"):
-#             self.img.content = None
-#             os.remove(os.path.join(self.dir_path, file))
-#     self.build_path()
-#     plt.savefig(self.save_path, dpi=300, bbox_inches='tight')
-#     plt.close()
-
-# def merge_data(self):
-#     all_x = self.x + self.X
-#     all_y = self.y + self.Y
-#     all_x, all_y = zip(*sorted(zip(all_x, all_y)))
-#     return all_x, all_y

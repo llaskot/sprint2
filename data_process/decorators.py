@@ -1,5 +1,4 @@
 import threading
-from functools import wraps
 
 
 def log_thread_async(func):

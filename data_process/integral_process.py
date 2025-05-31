@@ -1,5 +1,4 @@
 import asyncio
-
 from data_process.decorators import call_logging, log_thread_async
 from data_process.functions import super_func
 
@@ -45,12 +44,9 @@ class Integral_process:
     def find_integrals(self, func_name: str):
         def func(x):
             return super_func(func_name, x)
-
-        def func_2(x):
-            return super_func(func_name, x, 2)
-
-        def func_4(x):
-            return super_func(func_name, x, 4)
+        func = super_func(func_name)
+        func_2 = super_func(func_name, 2)
+        func_4 = super_func(func_name, 4)
 
         fuc_values = self.__get_func_values(func)
         max_rect = max(fuc_values)

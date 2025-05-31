@@ -1,9 +1,5 @@
 import json
-
 import flet as ft
-import pandas as pd
-import math
-
 from ui.output.output import Output
 from data_process.functions import f_sym as functions
 
@@ -11,11 +7,9 @@ from data_process.functions import f_sym as functions
 class Popup_integr:
     def __init__(self, page, output: Output, upd):
         self.output = output
-        # self.graph = graph
         self.a = None
         self.b = None
         self.n = None
-        # self.y0 = None
         self.func = None
         self.page = page
         self.dialog = None  # Пока нет попапа
@@ -63,7 +57,6 @@ class Popup_integr:
             'b': self.b,
             'N': self.n,
         }
-        print(res)
         self.page.result = res
         self.page.df = 'aaaa'
 
@@ -131,11 +124,9 @@ class Popup_integr:
         row_container = self.values_fields.controls[0]
         self.a = float(row_container.content.controls[3].value)
         self.b = float(row_container.content.controls[5].value)
-        # self.y0 = float(row_container.content.controls[7].value)
         self.n = int(row_container.content.controls[7].value)
         self.func = self.drp.value
         self.get_data()
-        # print('self.a =', self.a, 'self.b = ', self.b, 'n = ', self.n, 'self.func =', self.func)
 
     def close(self, e):
         self.collect_values(e)

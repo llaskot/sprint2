@@ -1,13 +1,7 @@
-import time
-
 import flet as ft
-
 from data_process.decorators import call_logging
 from data_process.eq_process import Diff_eq
-# from file_process.excel_process import Excel_process
-from ui.graph.grapf import Graph
 from ui.output.output import Output
-from ui.popup import Popup_integr
 from ui.popup_differ import Popup_differ
 from data_process.differential_equations import f as dif_equal_name
 
@@ -40,7 +34,8 @@ class Equalities:
 
                                 ft.Container(
                                     content=self.func_name
-                                )
+                                ),
+                                ft.Text('Integration')
 
                             ]
                         )
@@ -66,7 +61,6 @@ class Equalities:
                               style=ft.ButtonStyle(
                                   shape=ft.RoundedRectangleBorder(radius=5),
                                   bgcolor={
-                                      # ft.ControlState.DISABLED: "#535426",
                                       ft.ControlState.DEFAULT: "#136102"
                                   }
                               )
